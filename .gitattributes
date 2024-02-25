@@ -1,0 +1,6 @@
+pai_task_table.csv filter=lfs diff=lfs merge=lfs -text
+pai_sensor_table.csv filter=lfs diff=lfs merge=lfs -text
+pai_machine_metric.csv filter=lfs diff=lfs merge=lfs -text
+pai_job_table.csv filter=lfs diff=lfs merge=lfs -text
+pai_instance_table.csv filter=lfs diff=lfs merge=lfs -text
+pai_group_tag_table.csv filter=lfs diff=lfs merge=lfs -text
