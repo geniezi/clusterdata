@@ -1,0 +1,8 @@
+cluster-trace-gpu-v2020/data/pai_group_tag_table.csv
+cluster-trace-gpu-v2020/data/pai_instance_table.csv
+cluster-trace-gpu-v2020/data/pai_job_table.csv
+cluster-trace-gpu-v2020/data/pai_machine_metric.csv
+cluster-trace-gpu-v2020/data/pai_machine_spec.csv
+cluster-trace-gpu-v2020/data/pai_sensor_table.csv
+cluster-trace-gpu-v2020/data/pai_task_table.csv
+cluster-trace-gpu-v2020/analysis/__pycache__/utils.cpython-39.pyc
