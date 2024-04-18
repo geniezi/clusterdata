@@ -8,13 +8,13 @@ import matplotlib.pyplot as plt
 
 ########### Data Constants ###########
 DATA_DIR = '../data/'
-if not os.access('/tmp/figures', os.F_OK):
-    os.mkdir('/tmp/figures')
-if not os.access('/tmp/figures', os.W_OK):
-    print('Cannot write to /tmp/figures, please fix it.')
+if not os.access('../tmp/figures', os.F_OK):
+    os.mkdir('../tmp/figures')
+if not os.access('../tmp/figures', os.W_OK):
+    print('Cannot write to ../tmp/figures, please fix it.')
     exit()
 else:
-    print('figures saved to /tmp/figures')
+    print('figures saved to ../tmp/figures')
 
 ########### Prepare Functions ###########
 def get_df(file, header=None):
@@ -131,7 +131,7 @@ def plot_data_cdf(data, inverse=False, datalabel=None, xlabel=None, title=None, 
     if xticks is not None: plt.xticks(xticks)
     plt.grid(alpha=.3, linestyle='--')
     if savefig is not None:
-        plt.savefig('/tmp/figures/{}.pdf'.format(savefig),bbox_inches='tight')
+        plt.savefig('../tmp/figures/{}.pdf'.format(savefig),bbox_inches='tight')
     else:
         plt.show()
 
@@ -158,7 +158,7 @@ def plot_data_cdfs(data, datalabel=None, inverse=False, xlabel=None, title=None,
     if yticks is not None: plt.yticks(yticks)
     plt.grid(alpha=.3, linestyle='--')
     if savefig is not None:
-        plt.savefig('/tmp/figures/{}.pdf'.format(savefig),bbox_inches='tight')
+        plt.savefig('../tmp/figures/{}.pdf'.format(savefig),bbox_inches='tight')
     else:
         plt.show()
 
@@ -208,6 +208,8 @@ def add_hour_date(df):
 def get_hourly_task_request(df): # df = dftjkix
     sum_df_list = []
     df = add_hour_date(df.copy())
+    # 去除空行
+    df = df.dropna(subset=['date'])
     # for day in sorted(df.dayofyear.unique()):
     for date in sorted(df.date.unique()):
         # tempdf = df[df.dayofyear==day]
@@ -215,7 +217,7 @@ def get_hourly_task_request(df): # df = dftjkix
         res_df = tempdf.groupby('hour').count()[['job_name']]
         res_df.rename(columns={'job_name':date}, inplace=True)
         sum_df_list.append(res_df.T)
-    out_df = pd.DataFrame().append(sum_df_list)
+    out_df = pd.DataFrame()._append(sum_df_list)
     return out_df.dropna() # if a day contains hours of NaN, it is not a typical day
 
 def get_hourly_task_resource_request(df, metrics='cpu'): # df = dftjkix
@@ -230,13 +232,14 @@ def get_hourly_task_resource_request(df, metrics='cpu'): # df = dftjkix
     else:
         exit()
     # for day in sorted(df.dayofyear.unique()):
+    df = df.dropna(subset=['date'])
     for date in sorted(df.date.unique()):
         # tempdf = df[df.dayofyear==day]
         tempdf = df[df.date==date]
-        res_df = tempdf.groupby('hour').sum()[['plan_resource']]
+        res_df = tempdf.groupby('hour').sum(numeric_only=True)[['plan_resource']]
         res_df.rename(columns={'job_name':date}, inplace=True)
         sum_df_list.append(res_df.T)
-    out_df = pd.DataFrame().append(sum_df_list)
+    out_df = pd.DataFrame()._append(sum_df_list)
     return out_df.dropna() # if a day contains hours of NaN, it is not a typical day
 
 def plan_minus_usg_over_cap_task(dfas):
